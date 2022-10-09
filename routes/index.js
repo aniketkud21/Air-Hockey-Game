@@ -3,9 +3,10 @@ const passport = require('passport')
 const router = express.Router()
 const User = require('../models/user')
 const Utils = require('../utils')
+const jwt = require('jsonwebtoken')
 
 router.get('/', (req, res)=>{
-    console.log(req.cookies['jwt'])
+    //console.log(req.cookies['jwt'])
     console.log("get route");
     res.send("You are accessing get route")
 })
@@ -32,7 +33,7 @@ router.post('/login', (req, res, next)=>{
                     res.cookie('jwt', tokenObject.signedToken, {
                         httpOnly:true
                     })
-                    res.redirect('/protected')
+                    res.redirect('/lobby')
                     //return res.json({suceess:true, token:tokenObject.signedToken, expiresIn:tokenObject.expiresIn})
                 }
                 else{
@@ -86,6 +87,11 @@ router.post('/register', (req, res, next)=>{
         next(err)
         //res.json({suceess:false, message:err})
     })
+})
+
+router.get('/lobby', passport.authenticate('jwt', {session:false}), (req,res)=>{
+    const decodedjwt = jwt.decode(req.cookies['jwt'], {complete:true})
+    res.render('lobby.ejs', {userId: decodedjwt.payload.sub})
 })
 
 router.get('/protected', passport.authenticate('jwt', {session:false}), (req, res)=>{

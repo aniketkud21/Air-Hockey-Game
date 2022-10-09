@@ -1,0 +1,27 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Game Lobby</title>
+    <link rel="stylesheet" href="lobbystyle.css">
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="client.js" defer ></script>
+    <script>
+        var userId = '<%= userId %>' 
+    </script>
+</head>
+<body>
+    <h1>Chat</h1>
+    <div class="container">
+        
+    </div>
+    <div class ="userlist">
+
+    </div>
+    <div class="send">
+        <form action="#" id="send-container">
+            <input type="text" id="messageInp" name="message">
+            <button class =btn >Send</button>
+        </form>
+    </div>
+</body>
+</html>
