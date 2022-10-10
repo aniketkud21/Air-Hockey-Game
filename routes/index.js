@@ -94,6 +94,12 @@ router.get('/lobby', passport.authenticate('jwt', {session:false}), (req,res)=>{
     res.render('lobby.ejs', {userId: decodedjwt.payload.sub})
 })
 
+router.get('/usermanual', (req, res)=>{
+    res.render('usermanual.ejs')
+})
+
+
+
 router.get('/protected', passport.authenticate('jwt', {session:false}), (req, res)=>{
     return res.json({suceess:true, message:"Succesffuly entered protected route"})
 })

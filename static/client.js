@@ -7,15 +7,6 @@ const usersContainer = document.querySelector('.userlist')
 
 socket.emit('new-user-joined',userId)
 
-socket.on('online-users', (onlineUsers)=>{
-
-    // todo
-    console.log(onlineUsers)
-    for(var i in onlineUsers){
-        console.log(onlineUsers[i].username);
-    }
-})
-
 const appendUser = (username)=>{
     const userElement = document.createElement('div')
     userElement.innerText=username
@@ -44,4 +35,14 @@ form.addEventListener('submit', (e)=>{
 
 socket.on('receive-message', (data)=>{
     append(`${data.name} : ${data.message}`, 'left')
+})
+
+socket.on('online-users', (onlineUsers)=>{
+    console.log("Hello");
+    //console.log(onlineUsers)
+    for(var i in onlineUsers){
+        if(i!=socket.id){
+            console.log(onlineUsers[i].username);
+        }
+    }
 })
