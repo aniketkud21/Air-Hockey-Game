@@ -6,13 +6,18 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "Dogica";
+  src: url(./fonts/dogicapixel.ttf);
+}
+
 html {
   overflow: hidden;
 }
 
 body {
   cursor: context-menu;
-  background: rgba(0, 0, 0, 0.4) url(./images/bg2.jpg)no-repeat;
+  background: rgba(0, 0, 0, 0.35) url(./images/bg2.jpg) no-repeat;
   background-blend-mode: darken;
   background-size: cover;
 }
@@ -38,9 +43,9 @@ body {
 }
 
 .text1 {
-  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+  font-family: "Dogica";
   color: #ffffff;
-  font-size: 30px;
+  font-size: 27px;
   font-weight: 500;
 
   width: 314px;
@@ -51,28 +56,29 @@ body {
 }
 
 .text2 {
-  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+  font-family: "Dogica";
   color: rgb(115, 115, 115);
-  font-size: 16px;
+  font-size: 13px;
+  line-height: 1.5;
   font-weight: 400;
   text-align: justify;
   width: 314px;
 
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
 }
 
 .text2_1 {
-  font-weight: bolder;
+  font-weight: bold;
   color: #ffffff;
 }
 
 .username,
 .password {
   background-color: rgb(51, 51, 51);
-  color: #8c8c8c;
+  color: #ffffff;
 
-  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-family: "Dogica";
+  font-size: 13px;
 
   width: 314px;
   height: 50px;
@@ -104,15 +110,16 @@ body {
   border: none;
   border-radius: 4px;
 
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 500;
-  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+  font-family: "Dogica";
   margin: 30px 0 12px;
   padding: 16px;
   transition: all 300ms;
 }
 
 .login-btn:hover {
+  opacity: 0.8;
   background-color: #4285f4;
 }
 
@@ -121,18 +128,18 @@ body {
 }
 
 .text3 {
-    font-size: 16px;
-    font-weight: 400;
-    font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
-    color: rgb(115, 115, 115);
-    margin-top: 40px;
+  font-size: 11px;
+  font-weight: 400;
+  font-family: "Dogica";
+  color: rgb(115, 115, 115);
+  margin-top: 40px;
 }
 
 .register {
   text-decoration: none;
+  font-weight: bold;
   transition: all 300ms;
 }
 .register:hover {
   text-decoration: underline;
 }
-
