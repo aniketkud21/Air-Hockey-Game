@@ -58,7 +58,7 @@ a {
 
 .heading {
   font-family: "DogicaBold";
-  color: #ccc;
+  color: #fff;
   font-size: 40px;
 }
 
@@ -66,7 +66,7 @@ a {
   font-family: "Dogica";
 
   font-size: 14px;
-  color: #ccc;
+  color: #fff;
   margin: 5px 0 40px;
 
   width: 360px;
@@ -175,7 +175,7 @@ a {
   width: 97%;
 
   background-color: transparent;
-  color: #ccc;
+  color: #fff;
   display: flex;
   align-items: center;
 
@@ -191,7 +191,7 @@ a {
 
 .sidebar-container li a:hover .icon,
 .sidebar-container li a:hover .text {
-  color: #ccc;
+  color: #fff;
 }
 
 .final-wrapper .chat-container {
@@ -339,7 +339,7 @@ a {
   color: #ccc;
 }
 
-.final-wrapper .online-users {
+.final-wrapper .online-users-container {
   position: fixed;
   top: 0;
   right: 0;
@@ -348,7 +348,7 @@ a {
   border: 1px solid #23272a;
 }
 
-.online-users .message1 {
+.online-users-container .message1 {
   position: relative;
 
   margin-top: 3rem;
@@ -362,7 +362,7 @@ a {
   color: #ffffff;
 }
 
-.online-users .message2 {
+.online-users-container .message2 {
   position: relative;
 
   margin-top: 1.5rem;
@@ -378,6 +378,39 @@ a {
   color: #ccc;
 }
 
+.final-wrapper .footer-container {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-container .footer-text {
+  font-family: "Dogica";
+  font-size: 14px;
+  color: #fff;
+  margin-top: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.footer-container .footer-icons {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+  width: 5rem;
+  font-size: 18px;
+}
+
+.footer-container .footer-icons .giticon,
+.footer-container .footer-icons .instaicon {
+  color: #fff;
+}
+
 #popup-rules,
 #popup-stats,
 #popup-leaderboard {
@@ -391,6 +424,7 @@ a {
   padding: 50px;
 
   box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
   background: #f6f5ff;
 
   visibility: hidden;
