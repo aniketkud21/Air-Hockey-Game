@@ -23,7 +23,6 @@
         <p class="heading">AIR HOCKEY</p>
         <p class="heading-underline">Fun to play Arcade Game</p>
       </div>
-      <!-- <p class="line1"></p> -->
 
       <div class="sidebar-container">
         <!-- <i class="bx bx-chevron-right toggle"></i> -->
@@ -70,13 +69,26 @@
           </div>
         </div>
       </div>
-      <div class="online-users">
+      <div class="online-users-container">
         <p class="message1">Active Now</p>
         <p class="message2">
           When a friend starts an activity-like playing a game or hanging out in
           chat area-we'll show it here!
         </p>
         <div class="user-list"></div>
+      </div>
+
+      <div class="footer-container">
+        <p class="footer-text">Follow us on</p>
+
+        <div class="footer-icons">
+          <a href="https://github.com/Flux690"
+            ><i class="fa-brands fa-github giticon"></i
+          ></a>
+          <a href="https://www.instagram.com/ig_flux56/"
+            ><i class="fa-brands fa-instagram instaicon"></i
+          ></a>
+        </div>
       </div>
     </div>
 
@@ -149,9 +161,14 @@
     </div>
 
     <script type="text/javascript">
-      var date = new Date().toDateString();
-      console.log(date);
-      document.getElementById("time").textContent = date;
+      `use strict`;
+      function refreshTime() {
+        const timeDisplay = document.getElementById("time");
+        const dateString = new Date().toDateString();
+        const formattedString = dateString.replace(", ", " - ");
+        timeDisplay.textContent = formattedString;
+      }
+      setInterval(refreshTime, 1000);
 
       var blur = document.getElementById("blur");
       const body = document.querySelector("body");
