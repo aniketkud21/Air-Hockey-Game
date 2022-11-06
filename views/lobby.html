@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://secure.exportkit.com/cdn/js/ek_googlefonts.js?v=6"></script>
+    <script
+      src="https://kit.fontawesome.com/c8ead70426.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="lobby.css" />
+
+    <title>GameLobby</title>
+  </head>
+  <body>
+    <div class="final-wrapper" id="blur">
+      <div class="header-container">
+        <p class="heading">AIR HOCKEY</p>
+        <p class="heading-underline">Fun to play Arcade Game</p>
+      </div>
+      <!-- <p class="line1"></p> -->
+
+      <div class="sidebar-container">
+        <!-- <i class="bx bx-chevron-right toggle"></i> -->
+
+        <ul>
+          <li>
+            <a href="#" onclick="toggle_back_rules()"
+              ><i class="fa regular fa-book icon"></i
+              ><span class="text">Rules</span></a
+            >
+          </li>
+          <li>
+            <a href="#" onclick="toggle_back_stats()"
+              ><i class="fas fa-chart-bar icon"></i
+              ><span class="text">Your Stats</span></a
+            >
+          </li>
+          <li>
+            <a href="#" onclick="toggle_back_leaderboard()"
+              ><i class="fa solid fa-chart-simple icon"></i
+              ><span class="text">Leaderboard</span></a
+            >
+          </li>
+          <li>
+            <a href="#"
+              ><i class="fas fa-sign-out-alt icon"></i
+              ><span class="text">Log Out</span></a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat">
+          <input class="input-text" type="text" placeholder="Send Message" />
+          <button class="sendbtn">Send</button>
+        </div>
+        <div class="output">
+          <div class="welcome">
+            <i class="fa-solid fa-hashtag welcome-icon"></i>
+            <p class="welcome-message-1">Welcome to #general!</p>
+            <p class="welcome-message-2">This is the start of #general chat.</p>
+            <p class="line" id="time"></p>
+          </div>
+        </div>
+      </div>
+      <div class="online-users">
+        <p class="message1">Active Now</p>
+        <p class="message2">
+          When a friend starts an activity-like playing a game or hanging out in
+          chat area-we'll show it here!
+        </p>
+        <div class="user-list"></div>
+      </div>
+    </div>
+
+    <div id="popup-rules">
+      <p class="rules-heading">
+        <b>Air hockey</b> is a pretty straightforward game. Still, to really
+        know how to play air hockey, you need to know the rules. Here are the
+        basics of how to play air hockey-
+      </p>
+      <ol class="rules-list">
+        <li>
+          To score a point, the puck must fully enter the goal. Rebounds or
+          pucks that get stuck halfway in do not count as a point.
+        </li>
+        <li>
+          A player can use arrow keys to move the puck up/down or rotate them
+          clockwise/anti-clockwise.
+        </li>
+        <li>
+          There is no restriction on the serve. Any player can serve
+          irrespective of the winner of last point or round.
+        </li>
+        <li>You can strike a puck with any side of the mallet (pusher).</li>
+        <li>First player to score seven points wins the game.</li>
+      </ol>
+
+      <a href="#" class="popup-close" onclick="toggle_back_rules()">Close</a>
+    </div>
+
+    <div id="popup-stats">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo non
+        assumenda accusantium corporis dolorem tempora odit vel, temporibus ex
+        quam error praesentium quasi ullam excepturi doloremque ab dolor
+        deleniti minus.
+      </p>
+
+      <a href="#" class="popup-close" onclick="toggle_back_stats()">Close</a>
+    </div>
+
+    <div id="popup-leaderboard">
+      <div class="leaderboard-list">
+        <ul class="list">
+          <li class="row">
+            <p class="name">Player 1</p>
+            <p class="score">400</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 2</p>
+            <p class="score">300</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 3</p>
+            <p class="score">450</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 4</p>
+            <p class="score">420</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 5</p>
+            <p class="score">510</p>
+          </li>
+        </ul>
+      </div>
+
+      <a href="#" class="popup-close" onclick="toggle_back_leaderboard()"
+        >Close</a
+      >
+    </div>
+
+    <script type="text/javascript">
+      var date = new Date().toDateString();
+      console.log(date);
+      document.getElementById("time").textContent = date;
+
+      var blur = document.getElementById("blur");
+      const body = document.querySelector("body");
+      toggle = body.querySelector(".toggle");
+      sidebar = body.querySelector(".sidebar-container");
+
+      toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+      });
+
+      function toggle_back_rules() {
+        blur.classList.toggle("active");
+
+        var popup1 = document.getElementById("popup-rules");
+        popup1.classList.toggle("active");
+      }
+      function toggle_back_stats() {
+        blur.classList.toggle("active");
+
+        var popup2 = document.getElementById("popup-stats");
+        popup2.classList.toggle("active");
+      }
+      function toggle_back_leaderboard() {
+        blur.classList.toggle("active");
+
+        var popup3 = document.getElementById("popup-leaderboard");
+        popup3.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>
