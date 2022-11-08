@@ -1,0 +1,159 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Dogica";
+  src: url(../fonts/dogicapixel.ttf);
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  cursor: context-menu;
+  background: rgba(0, 0, 0, 0.35) url(../images/bg2.jpg) no-repeat;
+  background-blend-mode: darken;
+  background-size: cover;
+}
+
+.container {
+  margin: auto;
+  height: 660px;
+  width: 450px;
+
+  position: absolute;
+  top: 40px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background-color: rgba(0, 0, 0, 0.75);
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.column {
+  margin-left: 68px;
+}
+
+.text1 {
+  font-family: "Dogica", sans-serif;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 500;
+
+  width: 314px;
+  height: 36px;
+
+  margin-top: 70px;
+  margin-bottom: 28px;
+}
+
+.text2 {
+  font-family: "Dogica", sans-serif;
+  color: rgb(115, 115, 115);
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 400;
+  text-align: justify;
+  width: 314px;
+
+  margin-bottom: 30px;
+}
+
+.text2_1 {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.username,
+.password {
+  background-color: rgb(51, 51, 51);
+  color: #ffffff;
+
+  font-family: "Dogica", sans-serif;
+  font-size: 13px;
+
+  width: 314px;
+  height: 50px;
+
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+
+  border-radius: 4px;
+  padding-left: 20px;
+}
+
+.username:focus,
+.password:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.password {
+  margin-top: 14px;
+}
+
+.login-btn {
+  width: 314px;
+  height: 50px;
+  cursor: pointer;
+
+  background-color: #4285f4;
+  border: none;
+  border-radius: 4px;
+
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Dogica", sans-serif;
+  margin: 30px 0 12px;
+  padding: 16px;
+  transition: all 300ms;
+}
+
+.login-btn:hover {
+  opacity: 0.8;
+  background-color: #4285f4;
+}
+
+.login-btn:active {
+  background-color: #3367d6;
+}
+
+.text3 {
+  font-size: 12px;
+  font-weight: 400;
+  font-family: "Dogica", sans-serif;
+  color: rgb(115, 115, 115);
+  margin-top: 40px;
+}
+
+.register {
+  position: relative;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 300ms;
+}
+
+.register:after {
+  content: "";
+  position: absolute;
+
+  width: 0;
+  height: 2px;
+  left: 0;
+  bottom: -8px;
+
+  background-color: #ccc;
+  transition: all 300ms ease;
+}
+.register:hover:after {
+  width: 100%;
+}

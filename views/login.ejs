@@ -1,27 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="loginstyle.css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://secure.exportkit.com/cdn/js/ek_googlefonts.js?v=6"></script>
+    <link rel="stylesheet" href="/css/login.css" />
+    <title>Login</title>
   </head>
   <body>
-    <form action="/login" method="post" id='login-form'>
-        <div class="imgcontainer">
-          <h1>LOGIN PAGE</h1>
-        </div>
-      
-        <div class="container">
-          <label for="username"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="username" required>
-      
-          <label for="password"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="password" required>
-      
-          <button type="submit" id="submit-btn">Login</button>
-        </div>
-      </form>
+    <div class="container">
+      <div class="column">
+        <p class="text1">Sign In</p>
+        <p class="text2">
+          <b class="text2_1">Welcome Back</b> if you have already been here
+          before!
+        </p>
+        <% if(message.length>0) {%>
+          <p class="text2">
+             <%= message %>
+          </p>
+        <% } %>
+       
+        <form action="/login" method="post">
+          <div class="input-field">
+            <input
+              type="text"
+              id="name"
+              name="username"
+              placeholder="Username"
+              class="username"
+              required
+            />
+          </div>
+
+          <div class="input-field">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              class="password"
+              required
+            />
+          </div>
+          
+          <button class="login-btn" type="submit">Sign In</button>
+        </form>
+        <p class="text3">
+          New to Air Hockey?
+          <a class="register" href="/register">
+            <font style="color: #ffffff">Register Now</font>
+          </a>
+        </p>
+      </div>
+    </div>
   </body>
 </html>

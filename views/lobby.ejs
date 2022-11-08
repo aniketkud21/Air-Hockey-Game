@@ -1,27 +1,212 @@
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Game Lobby</title>
-    <link rel="stylesheet" href="lobbystyle.css">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://secure.exportkit.com/cdn/js/ek_googlefonts.js?v=6"></script>
     <script src="/socket.io/socket.io.js" defer></script>
-    <script src="client.js" defer ></script>
+    <script src="/javascript/client.js" defer ></script>
     <script>
-        var userId = '<%= userId %>' 
+      var userId = '<%= userId %>' 
     </script>
-</head>
-<body>
-    <h1>Chat</h1>
-    <div class="container">
-        
-    </div>
-    <div class ="userlist">
+    <script
+      src="https://kit.fontawesome.com/c8ead70426.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/lobby.css" />
 
+    <title>GameLobby</title>
+  </head>
+  <body>
+    <div class="final-wrapper" id="blur">
+      <div class="header-container">
+        <p class="heading">AIR HOCKEY</p>
+        <p class="heading-underline">Fun to play Arcade Game</p>
+      </div>
+
+      <div class="sidebar-container">
+        <!-- <i class="bx bx-chevron-right toggle"></i> -->
+
+        <ul>
+          <li>
+            <a href="#" onclick="toggle_back_rules()"
+              ><i class="fa regular fa-book icon"></i
+              ><span class="text">Rules</span></a
+            >
+          </li>
+          <li>
+            <a href="#" onclick="toggle_back_stats()"
+              ><i class="fas fa-chart-bar icon"></i
+              ><span class="text">Your Stats</span></a
+            >
+          </li>
+          <li>
+            <a href="#" onclick="toggle_back_leaderboard()"
+              ><i class="fa solid fa-chart-simple icon"></i
+              ><span class="text">Leaderboard</span></a
+            >
+          </li>
+          <li>
+            <a href="/game" 
+              ><i class="fa-solid fa-gamepad icon"></i>
+              <span class="text">Play Game</span></a
+            >
+          </li>
+          <li>
+            <a href="/login"
+              ><i class="fas fa-sign-out-alt icon"></i
+              ><span class="text">Log Out</span></a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat">
+          <form action="#" id="send-container">
+            <input class="input-text" type="text" id ="messageInp" placeholder="Send Message" />
+            <button class="sendbtn">Send</button>
+          </form> 
+        </div>
+        <div class="output">
+          <div class="welcome">
+            <i class="fa-solid fa-hashtag welcome-icon"></i>
+            <p class="welcome-message-1">Welcome <%= username%></p>
+            <p class="welcome-message-2">This is the start of #general chat.</p>
+            <p class="line" id="time"></p>
+          </div>
+        </div>
+      </div>
+      <div class="online-users-container">
+        <p class="message1">Active Now</p>
+        <p class="message2">
+          When a friend starts an activity-like playing a game or hanging out in
+          chat area-we'll show it here!
+        </p>
+        <div class="user-list"></div>
+      </div>
+
+      <div class="footer-container">
+        <p class="footer-text">Follow us on</p>
+
+        <div class="footer-icons">
+          <a href="https://github.com/Flux690"
+            ><i class="fa-brands fa-github giticon"></i
+          ></a>
+          <a href="https://www.instagram.com/ig_flux56/"
+            ><i class="fa-brands fa-instagram instaicon"></i
+          ></a>
+        </div>
+      </div>
     </div>
-    <div class="send">
-        <form action="#" id="send-container">
-            <input type="text" id="messageInp" name="message">
-            <button class =btn >Send</button>
-        </form>
+
+    <div id="popup-rules">
+      <p class="rules-heading">
+        <b>Air hockey</b> is a pretty straightforward game. Still, to really
+        know how to play air hockey, you need to know the rules. Here are the
+        basics of how to play air hockey-
+      </p>
+      <ol class="rules-list">
+        <li>
+          To score a point, the puck must fully enter the goal. Rebounds or
+          pucks that get stuck halfway in do not count as a point.
+        </li>
+        <li>
+          A player can use arrow keys to move the puck up/down or rotate them
+          clockwise/anti-clockwise.
+        </li>
+        <li>
+          There is no restriction on the serve. Any player can serve
+          irrespective of the winner of last point or round.
+        </li>
+        <li>You can strike a puck with any side of the mallet (pusher).</li>
+        <li>First player to score seven points wins the game.</li>
+      </ol>
+
+      <a href="#" class="popup-close" onclick="toggle_back_rules()">Close</a>
     </div>
-</body>
+
+    <div id="popup-stats">
+      <div class="stats-info">
+        <p class="player-name">Player Name- Aniket</p>
+        <p class="games-played">Number of Games played- 10</p>
+        <p class="games-won">Number of Games won- 7</p>
+        <p class="games-lost">Number of Games lost- 3</p>
+        <p class="total-score">Total Score- 70</p>
+      </div>
+
+      <a href="#" class="popup-close" onclick="toggle_back_stats()">Close</a>
+    </div>
+
+    <div id="popup-leaderboard">
+      <div class="leaderboard-list">
+        <ul class="list">
+          <li class="row">
+            <p class="name">Player 1</p>
+            <p class="score">470</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 2</p>
+            <p class="score">380</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 3</p>
+            <p class="score">350</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 4</p>
+            <p class="score">240</p>
+          </li>
+          <li class="row">
+            <p class="name">Player 5</p>
+            <p class="score">200</p>
+          </li>
+        </ul>
+      </div>
+
+      <a href="#" class="popup-close" onclick="toggle_back_leaderboard()"
+        >Close</a
+      >
+    </div>
+
+    <script type="text/javascript">
+      `use strict`;
+      function refreshTime() {
+        const timeDisplay = document.getElementById("time");
+        const dateString = new Date().toDateString();
+        const formattedString = dateString.replace(", ", " - ");
+        timeDisplay.textContent = formattedString;
+      }
+      setInterval(refreshTime, 1000);
+
+      var blur = document.getElementById("blur");
+      const body = document.querySelector("body");
+      toggle = body.querySelector(".toggle");
+      sidebar = body.querySelector(".sidebar-container");
+
+      function toggle_back_rules() {
+        blur.classList.toggle("active");
+
+        var popup1 = document.getElementById("popup-rules");
+        popup1.classList.toggle("active");
+      }
+      function toggle_back_stats() {
+        blur.classList.toggle("active");
+
+        var popup2 = document.getElementById("popup-stats");
+        popup2.classList.toggle("active");
+      }
+      function toggle_back_leaderboard() {
+        blur.classList.toggle("active");
+
+        var popup3 = document.getElementById("popup-leaderboard");
+        popup3.classList.toggle("active");
+      }
+    </script>
+  </body>
 </html>

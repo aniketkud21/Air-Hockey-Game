@@ -1,6 +1,8 @@
 const express = require('express')
-const passport = require('passport')
 const router = express.Router()
+
+const passport = require('passport')
+
 const User = require('../models/user')
 const Utils = require('../utils')
 const jwt = require('jsonwebtoken')
@@ -12,18 +14,20 @@ router.get('/', (req, res)=>{
 })
 
 router.get('/login', (req,res)=>{
-    res.render('login.ejs')
+    res.render('login.ejs', {message: req.flash('error_msg')})
 })
 
 router.get('/register', (req, res)=>{
-    res.render('register.ejs')
+    res.render('register.ejs', {message: req.flash('error_msg')})
 })
 
 router.post('/login', (req, res, next)=>{
     User.findOne({username: req.body.username})
     .then((user)=>{
         if(!user){
-            return res.json({suceess: false, message:'Cant find user'})
+            req.flash('error_msg', 'Cant find user' )
+            res.redirect('/login')
+            //return res.json({suceess: false, message:'Cant find user'})
         }
         else{
             const isValid = Utils.validatePassword(req.body.password, user.hash)
@@ -37,6 +41,7 @@ router.post('/login', (req, res, next)=>{
                     //return res.json({suceess:true, token:tokenObject.signedToken, expiresIn:tokenObject.expiresIn})
                 }
                 else{
+                    req.flash('error_msg', 'Incorrect password' )
                     res.redirect('/login')
                     //return res.json({suceess: true, message:"Incorrect password"})
                 }
@@ -56,7 +61,9 @@ router.post('/register', (req, res, next)=>{
     User.findOne({username:req.body.username})
     .then((user)=>{
         if(user){
-            return res.json({suceess:true, message:"User already exists"})
+            req.flash('error_msg', 'User already exists' )
+            res.redirect('/register')
+            //return res.json({suceess:true, message:"User already exists"})
         }
         else{
             Utils.genSalt()
@@ -66,7 +73,7 @@ router.post('/register', (req, res, next)=>{
                     const newUser = new User({
                         username:req.body.username,
                         salt:salt,
-                        hash:hashedPassword
+                        hash:hashedPassword,
                     })
                     
                     try {
@@ -91,14 +98,17 @@ router.post('/register', (req, res, next)=>{
 
 router.get('/lobby', passport.authenticate('jwt', {session:false}), (req,res)=>{
     const decodedjwt = jwt.decode(req.cookies['jwt'], {complete:true})
-    res.render('lobby.ejs', {userId: decodedjwt.payload.sub})
+    let username
+    User.findById(decodedjwt.payload.sub)
+    .then((user)=>{
+        username = user.username;
+        res.render('lobby.ejs', {userId: decodedjwt.payload.sub, username:username})
+    })
 })
-
-router.get('/usermanual', (req, res)=>{
-    res.render('usermanual.ejs')
+   
+router.get('/game', (req,res)=>{
+    res.render('game.ejs')
 })
-
-
 
 router.get('/protected', passport.authenticate('jwt', {session:false}), (req, res)=>{
     return res.json({suceess:true, message:"Succesffuly entered protected route"})

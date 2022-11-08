@@ -2,8 +2,8 @@ const socket = io()
 
 const form = document.getElementById('send-container')
 const messageInp = document.getElementById('messageInp')
-const messageContainer = document.querySelector('.container')
-const usersContainer = document.querySelector('.userlist')
+const messageContainer = document.querySelector('.output')
+const usersContainer = document.querySelector('.user-list')
 
 socket.emit('new-user-joined',userId)
 
@@ -27,10 +27,9 @@ form.addEventListener('submit', (e)=>{
     if(messageInp.value){
         const message = messageInp.value
         socket.emit('send-message', message)
-        append(`You : ${message}`, 'right')
+        append(`You : ${message}`)
         messageInp.value = "";
     }
-    
 })
 
 socket.on('receive-message', (data)=>{
@@ -43,6 +42,7 @@ socket.on('online-users', (onlineUsers)=>{
     for(var i in onlineUsers){
         if(i!=socket.id){
             console.log(onlineUsers[i].username);
+            appendUser(onlineUsers[i].username)
         }
     }
 })
