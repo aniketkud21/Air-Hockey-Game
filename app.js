@@ -6,7 +6,7 @@ const server = http.createServer(app)
 const {Server} = require('socket.io')
 const io = new Server(server)
 
-const router = require('./routes/index')
+//const router = require('./routes/index')
 const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
@@ -40,13 +40,13 @@ app.use(session({
     saveUninitialized: true,
     cookie: { maxAge:6000000 }
 }))
-app.use(flash)
+app.use(flash())
 
 app.get('/noob', (req,res)=>{
     console.log("noob");
     res.send('noob route')
 })
-//app.use('/user', router)
+app.use(require('./routes/index'))
 console.log("Passport configured");
 
 // Socket ----------------------------
@@ -79,6 +79,6 @@ io.on('connection', (socket)=>{
     })
 })
 
-server.listen(process.env.PORT, ()=>{
+module.exports=server.listen(process.env.PORT, ()=>{
     console.log("Server started");
 })

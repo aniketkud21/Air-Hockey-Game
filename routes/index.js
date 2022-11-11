@@ -7,6 +7,8 @@ const User = require('../models/user')
 const Utils = require('../utils')
 const jwt = require('jsonwebtoken')
 
+let id = '63681bcdc0a00ed13569df02'
+
 router.get('/', (req, res)=>{
     //console.log(req.cookies['jwt'])
     console.log("get route");
@@ -26,7 +28,8 @@ router.post('/login', (req, res, next)=>{
     .then((user)=>{
         if(!user){
             req.flash('error_msg', 'Cant find user' )
-            res.redirect('/login')
+            res.status(404).send('Cant find user')
+            //res.redirect('/login')
             //return res.json({suceess: false, message:'Cant find user'})
         }
         else{
@@ -37,12 +40,14 @@ router.post('/login', (req, res, next)=>{
                     res.cookie('jwt', tokenObject.signedToken, {
                         httpOnly:true
                     })
-                    res.redirect('/lobby')
+                    res.send(tokenObject)
+                    //res.redirect('/lobby')
                     //return res.json({suceess:true, token:tokenObject.signedToken, expiresIn:tokenObject.expiresIn})
                 }
                 else{
                     req.flash('error_msg', 'Incorrect password' )
-                    res.redirect('/login')
+                    res.status(401).send('Incorrect Password')
+                    //res.redirect('/login')
                     //return res.json({suceess: true, message:"Incorrect password"})
                 }
             })
@@ -62,8 +67,9 @@ router.post('/register', (req, res, next)=>{
     .then((user)=>{
         if(user){
             req.flash('error_msg', 'User already exists' )
-            res.redirect('/register')
-            //return res.json({suceess:true, message:"User already exists"})
+            res.status(403).send('User already exists')
+            //res.redirect('/register')
+            //res.json({suceess:true, message:"User already exists"})
         }
         else{
             Utils.genSalt()
@@ -79,7 +85,8 @@ router.post('/register', (req, res, next)=>{
                     try {
                         newUser.save()
                         .then((user)=>{
-                            res.redirect('/login')
+                            res.send(user)
+                            //res.redirect('/login')
                             //res.json({suceess:true, user:user})
                         })
                     } catch (error) {
@@ -102,10 +109,31 @@ router.get('/lobby', passport.authenticate('jwt', {session:false}), (req,res)=>{
     User.findById(decodedjwt.payload.sub)
     .then((user)=>{
         username = user.username;
-        res.render('lobby.ejs', {userId: decodedjwt.payload.sub, username:username})
+        res.send(username)
+        //res.render('lobby.ejs', {userId: decodedjwt.payload.sub, username:username})
     })
 })
-   
+
+router.get('/leaderboard', (req,res)=>{
+    User.find({points:{$exists:true}}, null, {sort:{points:-1}})
+    .then((resp)=>{
+        res.send(resp)
+    })
+    .catch((err)=>{
+        res.send(err)
+    })
+})
+
+router.get('/personalStats', (req,res)=>{
+    User.findById(id)
+    .then((user)=>{
+        res.send(user)
+    })
+    .catch((err)=>{
+        res.send(err)
+    })
+})
+
 router.get('/game', (req,res)=>{
     res.render('game.ejs')
 })
