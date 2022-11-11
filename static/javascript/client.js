@@ -36,13 +36,25 @@ socket.on('receive-message', (data)=>{
     append(`${data.name} : ${data.message}`, 'left')
 })
 
+let onlinePlayers ={}
+
 socket.on('online-users', (onlineUsers)=>{
     console.log("Hello");
+    playersFound ={}
     //console.log(onlineUsers)
     for(var i in onlineUsers){
-        if(i!=socket.id){
+        if(onlinePlayers[i]==undefined && i!=socket.id){
             console.log(onlineUsers[i].username);
-            appendUser(onlineUsers[i].username)
+            onlinePlayers[i] = onlineUsers[i].username
+            appendUser(onlinePlayers[i])
+            playersFound[i] = true
+        }
+        
+    }
+    for(var j in onlinePlayers){
+        if(!playersFound[j]){
+            delete onlinePlayers[j]
+            appendUser(onlinePlayers[j])
         }
     }
 })

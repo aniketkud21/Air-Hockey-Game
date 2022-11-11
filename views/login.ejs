@@ -16,11 +16,7 @@
           <b class="text2_1">Welcome Back</b> if you have already been here
           before!
         </p>
-        <% if(message.length>0) {%>
-          <p class="text2">
-             <%= message %>
-          </p>
-        <% } %>
+       
        
         <form action="/login" method="post">
           <div class="input-field">
@@ -44,6 +40,11 @@
               required
             />
           </div>
+          <% if(message.length>0) {%>
+            <p class="error_text">
+               <%= message %>
+            </p>
+          <% } %>
           
           <button class="login-btn" type="submit">Sign In</button>
         </form>

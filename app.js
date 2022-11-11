@@ -6,12 +6,10 @@ const server = http.createServer(app)
 const {Server} = require('socket.io')
 const io = new Server(server)
 
-const router = require('./routes/index')
 const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
-
 
 const User = require("./models/user")
 
@@ -22,6 +20,7 @@ const port = process.env.PORT
 // Database and Passport configuration
 require("./config/database")
 require("./config/passport")(passport)
+require("./config/socket")(io)
 
 app.use(passport.initialize())
 
@@ -40,45 +39,15 @@ app.use(session({
     saveUninitialized: true,
     cookie: { maxAge:6000000 }
 }))
-app.use(flash)
+app.use(flash())
 
-app.get('/noob', (req,res)=>{
-    console.log("noob");
-    res.send('noob route')
-})
-//app.use('/user', router)
+app.use(require('./routes'))
 console.log("Passport configured");
 
 // Socket ----------------------------
 
-const onlineUsers = {}
 
-io.on('connection', (socket)=>{
-    console.log("Socket connected ", socket.id);
 
-    socket.on('new-user-joined', (userId)=>{
-        User.findById(userId)
-        .then((user)=>{
-            onlineUsers[socket.id] = user
-            console.log(onlineUsers)
-            io.emit('online-users', onlineUsers)
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    })
-
-    socket.on('disconnect', ()=>{
-        delete onlineUsers[socket.id]
-        io.emit('online-users', onlineUsers)
-    })
-
-    socket.on('send-message', (message)=>{
-        console.log(message);
-        socket.broadcast.emit('receive-message', {message: message, name:onlineUsers[socket.id].username})
-    })
-})
-
-server.listen(process.env.PORT, ()=>{
+module.exports = server.listen(process.env.PORT, ()=>{
     console.log("Server started");
 })

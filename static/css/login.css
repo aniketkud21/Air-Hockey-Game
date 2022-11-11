@@ -72,6 +72,15 @@ body {
   color: #ffffff;
 }
 
+.error_text{
+  font-family: "Dogica", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  position: relative;
+  margin-top: 1rem;
+  color: #d93025;
+}
+
 .username,
 .password {
   background-color: rgb(51, 51, 51);

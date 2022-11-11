@@ -3,9 +3,12 @@ const ctx = canvas.getContext('2d')
 
 let player1 = new Ball(80,270,30,10,1)
 player1.score=0;
+player1.color = "blue"
 let player2 = new Ball(540,270,30,10,1)
 player2.score=0;
+player2.color = "green"
 let football = new Ball(320,270,15,5,1)
+football.color = "red"
 buildStadium()
 
 ctx.font = "30px Arial"
@@ -50,8 +53,8 @@ function gameOver(){
     football.vel.set(0,0)
 }
 
-userInput1(player1)
-userInput2(player2)
+userInput1(player2)
+userInput2(player1)
 requestAnimationFrame(mainLoop)
 
 function buildStadium(){

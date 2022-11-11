@@ -41,6 +41,7 @@ a {
   font-family: "Dogica";
 }
 .final-wrapper {
+  overflow: hidden;
   position: relative;
   height: 100vh;
   width: 100%;
@@ -209,6 +210,10 @@ a {
   color: #fff;
 }
 
+.chat-container {
+  overflow: hidden;
+}
+
 .final-wrapper .chat-container {
   position: relative;
   margin-top: -1.5rem;
@@ -361,6 +366,10 @@ a {
   height: 100%;
   width: 310px;
   border: 1px solid #23272a;
+}
+
+.online-users-container {
+  overflow: hidden;
 }
 
 .online-users-container .message1 {

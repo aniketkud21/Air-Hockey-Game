@@ -8,7 +8,7 @@
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="/javascript/client.js" defer ></script>
     <script>
-      var userId = '<%= userId %>' 
+      var userId = '<%= userId%>'
     </script>
     <script
       src="https://kit.fontawesome.com/c8ead70426.js"
@@ -58,7 +58,7 @@
             >
           </li>
           <li>
-            <a href="/login"
+            <a href="/logout"
               ><i class="fas fa-sign-out-alt icon"></i
               ><span class="text">Log Out</span></a
             >
@@ -76,7 +76,7 @@
         <div class="output">
           <div class="welcome">
             <i class="fa-solid fa-hashtag welcome-icon"></i>
-            <p class="welcome-message-1">Welcome <%= username%></p>
+            <p class="welcome-message-1">Welcome <%= personalScore.username %></p>
             <p class="welcome-message-2">This is the start of #general chat.</p>
             <p class="line" id="time"></p>
           </div>
@@ -117,15 +117,14 @@
           pucks that get stuck halfway in do not count as a point.
         </li>
         <li>
-          A player can use arrow keys to move the puck up/down or rotate them
-          clockwise/anti-clockwise.
+          A player can use arrow keys to move the striker
         </li>
         <li>
           There is no restriction on the serve. Any player can serve
           irrespective of the winner of last point or round.
         </li>
         <li>You can strike a puck with any side of the mallet (pusher).</li>
-        <li>First player to score seven points wins the game.</li>
+        <li>First player to score three points wins the game.</li>
       </ol>
 
       <a href="#" class="popup-close" onclick="toggle_back_rules()">Close</a>
@@ -133,11 +132,11 @@
 
     <div id="popup-stats">
       <div class="stats-info">
-        <p class="player-name">Player Name- Aniket</p>
-        <p class="games-played">Number of Games played- 10</p>
-        <p class="games-won">Number of Games won- 7</p>
-        <p class="games-lost">Number of Games lost- 3</p>
-        <p class="total-score">Total Score- 70</p>
+        <p class="player-name">Player Name-<%= personalScore.username %></p>
+        <p class="games-played">Number of Games played-<%= personalScore.games %> </p>
+        <p class="games-won">Number of Games won-<%= personalScore.wins %> </p>
+        <p class="games-lost">Number of Games lost- <%= personalScore.loss %></p>
+        <p class="total-score">Total Score-<%= personalScore.points %> </p>
       </div>
 
       <a href="#" class="popup-close" onclick="toggle_back_stats()">Close</a>
@@ -146,26 +145,12 @@
     <div id="popup-leaderboard">
       <div class="leaderboard-list">
         <ul class="list">
-          <li class="row">
-            <p class="name">Player 1</p>
-            <p class="score">470</p>
-          </li>
-          <li class="row">
-            <p class="name">Player 2</p>
-            <p class="score">380</p>
-          </li>
-          <li class="row">
-            <p class="name">Player 3</p>
-            <p class="score">350</p>
-          </li>
-          <li class="row">
-            <p class="name">Player 4</p>
-            <p class="score">240</p>
-          </li>
-          <li class="row">
-            <p class="name">Player 5</p>
-            <p class="score">200</p>
-          </li>
+          <% for(var i=0; i<scoreList.length; i++) { %>
+            <li class="row">
+              <p class="name"><%= scoreList[i].username %></p>
+              <p class="score"><%= scoreList[i].points %></p>
+            </li>
+          <% } %>
         </ul>
       </div>
 
