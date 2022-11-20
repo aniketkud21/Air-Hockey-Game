@@ -1,3 +1,10 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
+const { MongoStore } = require('connect-mongo');
+const MongoDBStore = require('connect-mongo');
+
 const express = require('express')
 const app = express()
 
@@ -11,6 +18,7 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
+const cors = require('cors')
 
 
 const User = require("./models/user")
@@ -23,6 +31,7 @@ const port = process.env.PORT
 require("./config/database")
 require("./config/passport")(passport)
 
+app.use(cors())
 app.use(passport.initialize())
 
 app.set('view-engine', 'ejs')
@@ -34,12 +43,40 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge:6000000 }
-}))
+const secret = process.env.secret || 'thisshouldbeabettersecret';
+const store = MongoDBStore.create({
+  mongoUrl: process.env.DB_URL,
+  crypto: {
+    secret,
+  },
+   // should be in seconds:
+   touchAfter: 24 * 60 * 60,
+});
+store.on('error', function (e) {
+  console.log('Session store error: ', e);
+});
+
+// express-session settings
+const sessionConfig = {
+  store,
+  name: 'session',
+  secret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() * 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+app.use(session(sessionConfig));
+
+// app.use(session({
+//     secret: 'keyboard cat',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { maxAge:6000000 }
+// }))
 app.use(flash())
 
 app.get('/noob', (req,res)=>{
@@ -54,13 +91,13 @@ console.log("Passport configured");
 const onlineUsers = {}
 
 io.on('connection', (socket)=>{
-    console.log("Socket connected ", socket.id);
+    //console.log("Socket connected ", socket.id);
 
     socket.on('new-user-joined', (userId)=>{
         User.findById(userId)
         .then((user)=>{
             onlineUsers[socket.id] = user
-            console.log(onlineUsers)
+            //console.log(onlineUsers)
             io.emit('online-users', onlineUsers)
         })
         .catch((err)=>{
@@ -74,11 +111,13 @@ io.on('connection', (socket)=>{
     })
 
     socket.on('send-message', (message)=>{
-        console.log(message);
-        socket.broadcast.emit('receive-message', {message: message, name:onlineUsers[socket.id].username})
+        //console.log(message);
+        socket.broadcast.emit('receive-message', {message: message, name:onlineUsers[socket.id]})
     })
 })
 
-module.exports=server.listen(process.env.PORT, ()=>{
+server.listen(process.env.PORT, ()=>{
     console.log("Server started");
 })
+
+module.exports=server

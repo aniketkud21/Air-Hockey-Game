@@ -1,5 +1,11 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
+const io = require('socket.io-client')
+var socketUrl = 'http://localhost:3000';
+var options = {  
+  transports: ['websocket'],
+  'force new connection': true
+};
 
 const server = require('../app')
 
@@ -8,63 +14,39 @@ chai.should()
 
 chai.use(chaiHttp)
 
+let userId1 = '637a327d8f09ccf53cd037fe'
+let userId2 = '637a381df64f8eee66db0b36'
 let token
-let userId = '63681bcdc0a00ed13569df02'
 
 describe('Air Hockey Test', ()=>{
-    // Leaderboard test
-    describe('GET /leaderboard',()=>{
-        it('It should return leaderboard array', (done)=>{
-            chai.request(server)
-                .get('/leaderboard')
-                .end((err,resp)=>{
-                    resp.should.have.status(200)
-                    resp.body.should.be.a('array')
-                    resp.body.length.should.be.eq(5)
-                done()
-                })
-        })
-    })
 
-    // Personal Stats Test
-    describe('GET /personalStats',()=>{
-        it('It should return personal stats object', (done)=>{
-            chai.request(server)
-                .get('/personalStats')
-                .end((err,resp)=>{
-                    resp.should.have.status(200)
-                    resp.body.should.be.a('object')
-                    resp.body.should.have.property('username')
-                    resp.body.should.have.property('games')
-                    resp.body.should.have.property('wins')
-                    resp.body.should.have.property('loss')
-                    resp.body.should.have.property('points')
-                done()
+    describe('Test1: Chat functionality',()=>{
+        it('Should be able to send and recieve message', (done)=>{
+            const client1 = io.connect(socketUrl)
+            client1.on('connect', ()=>{
+                client1.emit('new-user-joined', (userId1) )
+                const client2 = io.connect(socketUrl,options)
+                client2.on('connect',()=>{
+                    client2.emit('new-user-joined', (userId2) )
+                    client1.emit('send-message', "Test string")
+                    client2.on('receive-message', (res)=>{
+                        chai.expect(res.message).to.equal('Test string')
+                        done()
+                    })
                 })
-        })
-    })
-
-    // Game Test
-    describe('GET /game',()=>{
-        it('It should return status code 200', (done)=>{
-            chai.request(server)
-                .get('/game')
-                .end((err,resp)=>{
-                    resp.should.have.status(200)
-                done()
-                })
+            })
         })
     })
 
     // user already exists
-    describe('POST /register',()=>{
-        it('It should return already exist', (done)=>{
+    describe('Test2: Registration',()=>{
+        it('Should return User already exists', (done)=>{
             let credentials = {
                 username: "aniket",
                 password: "abcd"
             }
             chai.request(server)
-                .post('/register')
+                .post('/test/register')
                 .send(credentials)
                 .end((err,resp)=>{
                     resp.should.have.status(403)
@@ -74,11 +56,47 @@ describe('Air Hockey Test', ()=>{
         })
     })
 
-    // unauthorized
-    describe('GET /lobby',()=>{
-        it('It should return unauthorized', (done)=>{
+    // non existent user
+    describe('Test3: Login Username',()=>{
+        it('Should return Cant find user', (done)=>{
+            let credentials = {
+                username: "ramesh",
+                password: "abcd"
+            }
             chai.request(server)
-                .get('/lobby')
+                .post('/test/login')
+                .send(credentials)
+                .end((err,resp)=>{
+                    resp.should.have.status(404)
+                    resp.text.should.be.eq('Cant find user')
+                done()
+                })
+        })
+    })
+
+     // incorrect password
+     describe('Test4: Login Password',()=>{
+        it('Should return Incorrect Password', (done)=>{
+            let credentials = {
+                username: "aniket",
+                password: "abcd2"
+            }
+            chai.request(server)
+                .post('/test/login')
+                .send(credentials)
+                .end((err,resp)=>{
+                    resp.should.have.status(401)
+                    resp.text.should.be.eq('Incorrect Password')
+                done()
+                })
+        })
+    })
+
+    // unauthorized
+    describe('Test5: Unauthorized access',()=>{
+        it('Should return unauthorized', (done)=>{
+            chai.request(server)
+                .get('/test/lobby')
                 .end((err,resp)=>{
                     resp.should.have.status(401)
                     resp.text.should.be.eq('Unauthorized')
@@ -86,17 +104,16 @@ describe('Air Hockey Test', ()=>{
                 })
         })
     })
-    
 
     // succesful login
-    describe('POST /login',()=>{
-        it('It should return token', (done)=>{
+    describe('Test6: Successful access',()=>{
+        it('Should return authorization token', (done)=>{
             let credentials = {
-                username: "jayesh",
-                password: "abcd"
+                username: "nigga",
+                password: "nigga"
             }
             chai.request(server)
-                .post('/login')
+                .post('/test/login')
                 .send(credentials)
                 .end((err,resp)=>{
                     resp.should.have.status(200)
@@ -110,10 +127,10 @@ describe('Air Hockey Test', ()=>{
     })
 
     // return username
-    describe('GET /lobby',()=>{
-        it('It should return username', (done)=>{
+    describe('Test7: Username on successful login',()=>{
+        it('Should return correct username', (done)=>{
             chai.request(server)
-                .get('/lobby')
+                .get('/test/lobby')
                 .set('Cookie', 'jwt='+token)
                 .end((err,resp)=>{
                     resp.should.have.status(200)
@@ -123,37 +140,46 @@ describe('Air Hockey Test', ()=>{
         })
     })
 
-    // non existent user
-    describe('POST /login',()=>{
-        it('It should return User error', (done)=>{
-            let credentials = {
-                username: "ramesh",
-                password: "abcd"
-            }
+    // Leaderboard test
+    describe('Test8: Leaderboard',()=>{
+        it('Should return leaderboard array', (done)=>{
             chai.request(server)
-                .post('/login')
-                .send(credentials)
+                .get('/test/leaderboard')
                 .end((err,resp)=>{
-                    resp.should.have.status(404)
-                    resp.text.should.be.eq('Cant find user')
+                    resp.should.have.status(200)
+                    resp.body.should.be.a('array')
+                    resp.body.length.should.be.eq(5)
                 done()
                 })
         })
     })
 
-    // incorrect password
-    describe('POST /login',()=>{
-        it('It should return Password error', (done)=>{
-            let credentials = {
-                username: "aniket",
-                password: "abcd2"
-            }
+    // Personal Stats Test
+    describe('Test9: Personal Stats',()=>{
+        it('Should return personal stats object', (done)=>{
             chai.request(server)
-                .post('/login')
-                .send(credentials)
+                .get('/test/personalStats')
+                .set('Cookie', 'jwt='+token)
                 .end((err,resp)=>{
-                    resp.should.have.status(401)
-                    resp.text.should.be.eq('Incorrect Password')
+                    resp.should.have.status(200)
+                    resp.body.should.be.a('object')
+                    resp.body.should.have.property('username')
+                    resp.body.should.have.property('games')
+                    resp.body.should.have.property('wins')
+                    resp.body.should.have.property('loss')
+                    resp.body.should.have.property('points')
+                done()
+                })
+        })
+    })    
+
+    // Game Test
+    describe('Test10: Game',()=>{
+        it('Should successfully enter in game', (done)=>{
+            chai.request(server)
+                .get('/test/game')
+                .end((err,resp)=>{
+                    resp.should.have.status(200)
                 done()
                 })
         })
