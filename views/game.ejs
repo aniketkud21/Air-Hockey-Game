@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        @font-face {
+            font-family: "Dogica";
+            src: url(../fonts/dogicapixel.ttf);
+        }
         body{
             background-color: gray;
             justify-content: center;
@@ -21,11 +25,30 @@
             align-items: center;
             background-color: #353a3f;
         }
+        .quit_button{
+            position: relative;
+            width: 7rem;
+            height: 2.5rem;
+            background-color: #d93025;
+            color: #fff;
+            margin-top: 1rem;
+            border: none;
+            font-family: "Dogica";
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .quit_button:hover{
+            opacity: 0.8;
+        }
+        .quit_button:active{
+            opacity: 0.6;
+        }
     </style>
     <title>Air Hockey</title>
 </head>
 <body>
     <canvas id="canvas" tabindex=0 width="640" height=480></canvas>
+    <a href="/lobby"> <button class ="quit_button" id="quit_button">Quit Game</button> </a>
     
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script> -->
     <script src="/javascript/physicsEngine.js"></script>

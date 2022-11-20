@@ -43,40 +43,12 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-const secret = process.env.secret || 'thisshouldbeabettersecret';
-const store = MongoDBStore.create({
-  mongoUrl: process.env.DB_URL,
-  crypto: {
-    secret,
-  },
-   // should be in seconds:
-   touchAfter: 24 * 60 * 60,
-});
-store.on('error', function (e) {
-  console.log('Session store error: ', e);
-});
-
-// express-session settings
-const sessionConfig = {
-  store,
-  name: 'session',
-  secret,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    expires: Date.now() * 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
-};
-app.use(session(sessionConfig));
-
-// app.use(session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { maxAge:6000000 }
-// }))
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge:6000000 }
+}))
 app.use(flash())
 
 app.get('/noob', (req,res)=>{

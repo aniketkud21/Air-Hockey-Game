@@ -77,7 +77,7 @@ router.post('/register', (req, res, next)=>{
                     try {
                         newUser.save()
                         .then((user)=>{
-                            res.send(user)
+                            //res.send(user)
                             res.redirect('/login')
                             //res.json({suceess:true, user:user})
                         })

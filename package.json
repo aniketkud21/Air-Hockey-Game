@@ -4,12 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "test": "mocha --timeout 100000"
-  },
-  "engines": {
-    "node": "16.13.1",
-    "npm": "8.1.2"
   },
   "author": "",
   "license": "ISC",
